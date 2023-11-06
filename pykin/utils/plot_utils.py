@@ -233,12 +233,12 @@ def plot_robot(
     name = robot.robot_name
 
     plot_basis(ax, robot)
+    plot_geom(ax, robot, geom, alpha=alpha, color=color)
 
+    if robot.has_gripper and robot.gripper.is_attached:
+        plot_attached_object(ax, robot, alpha)
+        
     if only_visible_geom:
-        plot_geom(ax, robot, geom, alpha=alpha, color=color)
-
-        if robot.has_gripper and robot.gripper.is_attached:
-            plot_attached_object(ax, robot, alpha)
         return
 
     if robot.has_gripper and robot.gripper.is_attached:
