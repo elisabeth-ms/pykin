@@ -46,7 +46,7 @@ class ShellColors:
     UNDERLINE = "\033[4m"
 
 
-def convert_thetas_to_dict(active_joint_names, thetas):
+def convert_thetas_to_dict(active_joint_names, hand_joint_names, thetas):
     """
     Check if any pair of objects in the manager collide with one another.
 
@@ -58,6 +58,10 @@ def convert_thetas_to_dict(active_joint_names, thetas):
         thetas (dict): Dictionary of actuated joint angles
     """
     if not isinstance(thetas, dict):
+        if len(active_joint_names) - len(hand_joint_names) == len(thetas):
+            for joint in hand_joint_names:
+                thetas.insert(active_joint_names.index(joint), 0)
+            
         assert len(active_joint_names) == len(
             thetas
         ), f"""the number of robot joint's angle is {len(active_joint_names)},

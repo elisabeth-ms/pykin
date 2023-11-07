@@ -24,12 +24,14 @@ class Kinematics:
         robot_name,
         offset,
         active_joint_names=[],
+        hand_joint_names=[],
         base_name="base",
         eef_name=None,
     ):
         self.robot_name = robot_name
         self.offset = offset
         self.active_joint_names = active_joint_names
+        self.hand_joint_names = hand_joint_names
         self.base_name = base_name
         self.eef_name = eef_name
 
@@ -46,7 +48,7 @@ class Kinematics:
         """
 
         if not isinstance(frames, list):
-            thetas = convert_thetas_to_dict(self.active_joint_names, thetas)
+            thetas = convert_thetas_to_dict(self.active_joint_names,self.hand_joint_names, thetas)
         fk = self._compute_FK(frames, self.offset, thetas)
         return fk
 

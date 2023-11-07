@@ -34,7 +34,7 @@ class SingleArm(Robot):
         Set joint limits upper and lower
         """
         for joint, (limit_lower, limit_upper) in self.joint_limits.items():
-            if "head" in joint:
+            if "head" in joint or "hand" in joint:
                 continue
             if self.joints[joint].dtype == "revolute":
                 if limit_lower is None and limit_upper is None:
@@ -219,7 +219,7 @@ class SingleArm(Robot):
     @property
     def arm_dof(self):
         return len(
-            [joint for joint in self.get_revolute_joint_names() if "head" not in joint]
+            [joint for joint in self.get_revolute_joint_names() if "head" not in joint and "hand" not in joint]
         )
 
     @property

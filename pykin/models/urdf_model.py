@@ -140,14 +140,20 @@ class URDFModel(RobotModel):
             joint_names = self._get_revolute_joint_names(self.root)
         else:
             joint_names = self._get_revolute_joint_names(desired_frames)
-
+        
         for i, joint in enumerate(joint_names):
             if "head" in joint:
                 head_joint = joint_names.pop(i)
                 joint_names.insert(0, head_joint)
 
+        # joint_names = [joint for joint in joint_names if "hand" not in joint]
         return joint_names
 
+    def get_hand_joint_names(self):
+        joint_names = self._get_revolute_joint_names(self.root)
+        hand_joint_names = [joint for joint in joint_names if "hand" in joint]
+        return hand_joint_names
+    
     def _set_links(self):
         """
         Set all links from urdf file

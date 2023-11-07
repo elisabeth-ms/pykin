@@ -11,7 +11,7 @@ def handler(signum, frame):
 # Set the signal handler
 signal.signal(signal.SIGINT, handler)
 
-from pykin.robots.gripper import PandaGripper, Robotiq140Gripper
+from pykin.robots.gripper import PandaGripper, Robotiq140Gripper, JacoHandGripper
 from pykin.kinematics.transform import Transform
 from pykin.kinematics.kinematics import Kinematics
 from pykin.models.urdf_model import URDFModel
@@ -46,6 +46,8 @@ class Robot(URDFModel):
                 self.gripper = PandaGripper()
             if "robotiq140" in self.gripper_name:
                 self.gripper = Robotiq140Gripper()
+            if "jaco_hand_gripper" in self.gripper_name:
+                self.gripper = JacoHandGripper()
 
         self.joint_limits_lower = []
         self.joint_limits_upper = []
@@ -66,7 +68,6 @@ class Robot(URDFModel):
     def set_transform(self, thetas):
         fk = self.forward_kin(thetas)
         for link, transform in fk.items():
-
             collision_h_mat = np.dot(
                 transform.h_mat, self.links[link].collision.offset.h_mat
             )
@@ -181,6 +182,7 @@ class Robot(URDFModel):
             robot_name=self.robot_name,
             offset=self.offset,
             active_joint_names=super().get_revolute_joint_names(),
+            hand_joint_names=super().get_hand_joint_names(),
             base_name="",
             eef_name=None,
         )
